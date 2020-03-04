@@ -96,6 +96,15 @@ public class SinglyLinkedListTest {
     }
 
     @Test
+    public void removeTest2(){
+        testList2 = new SinglyLinkedList<String>(testArray2);
+
+        Boolean actual = testList2.remove("han");
+
+        assertFalse(actual);
+    }
+
+    @Test
     public void containTest(){
         testList2 = new SinglyLinkedList<String>(testArray2);
 
@@ -133,4 +142,24 @@ public class SinglyLinkedListTest {
         assertEquals(expected, actual);
     }
 
+    @Test
+    public void copyTest(){
+        testList2 = new SinglyLinkedList<String>(testArray2);
+        SinglyLinkedList<String> copy2 = testList2.copy();
+
+        assertEquals(testList2.get(1), copy2.get(1));
+    }
+
+    @Test
+    public void sortTest(){
+        Integer[] test = new Integer[]{1, 3, 2, 7};
+        Integer[] exp = new Integer[]{1, 2, 3, 7};
+        testList = new SinglyLinkedList<Integer>(test);
+        SinglyLinkedList<Integer> expected = new SinglyLinkedList<Integer>(exp);
+        testList.sort();
+
+        for (int i = 0; i < testList.size(); i++) {
+            assertEquals(expected.get(i), testList.get(i));
+        }
+    }
 }

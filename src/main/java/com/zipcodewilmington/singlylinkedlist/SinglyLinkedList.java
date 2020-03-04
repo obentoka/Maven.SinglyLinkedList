@@ -1,5 +1,6 @@
 package com.zipcodewilmington.singlylinkedlist;
 
+import java.util.Collections;
 import java.util.LinkedList;
 
 /**
@@ -93,15 +94,30 @@ public class SinglyLinkedList<T> {
         return (T) iterateNode.getValue();
     }
 
+    public SinglyLinkedList copy(){
+        SinglyLinkedList newCopy = new SinglyLinkedList();
+        for (int i = 0; i < this.size; i++) {
+            newCopy.add(this.get(i));
+        }
+        return newCopy;
+    }
+
+    public void sort(){
+        for (Node i = head; i.getNext() != null ; i = i.getNext()) {
+            for (Node j = i.getNext(); j.getNext() != null; j = j.getNext()){
+                if(j.getValue().toString().compareTo(j.getNext().getValue().toString()) == 1){
+                    T val = (T) j.getValue();
+                    j.setValue(j.getNext().getValue());
+                    j.getNext().setValue(val);
+                }
+            }
+        }
+    }
+
     public class Node<T> {
 
         private Node next;
         private T value;
-
-        public Node(Node next, T value){
-            this.next = next;
-            this.value = value;
-        }
 
         public Node(){
             next = null;
@@ -127,7 +143,6 @@ public class SinglyLinkedList<T> {
             return value;
         }
     }
-
 }
 
 
