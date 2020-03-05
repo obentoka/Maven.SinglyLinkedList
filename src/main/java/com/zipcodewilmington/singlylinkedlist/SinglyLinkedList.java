@@ -8,15 +8,13 @@ import java.util.LinkedList;
  */
 public class SinglyLinkedList<T> {
 
-    private Node head;
-    private Node tail;
-    private Node current;
+    private Node<T> head;
+    private Node<T> tail;
     private Integer size;
 
     public SinglyLinkedList(){
         head = null;
         tail = null;
-        current = null;
         size = 0;
     }
 
@@ -29,25 +27,23 @@ public class SinglyLinkedList<T> {
 
     public Boolean add(T obj){
         if(head == null){
-            Node newNode = new Node();
+            Node<T> newNode = new Node<T>();
             newNode.setValue(obj);
             head = newNode;
             tail = newNode;
-            current = newNode;
             size++;
         }else if(head != null){
-            Node newNode = new Node();
+            Node<T> newNode = new Node<T>();
             newNode.setValue(obj);
+            tail.setNextNode(newNode);
             tail = newNode;
-            current.setNextNode(newNode);
-            current = newNode;
             size++;
         }
         return true;
     }
 
     public Boolean remove(T obj){
-        Node iterateNode = head;
+        Node<T> iterateNode = head;
         for (int i = 0; i < size; i++) {
             if(iterateNode.getNext().getValue().equals(obj)){
                 iterateNode.setNextNode(iterateNode.getNext().getNext());
@@ -59,7 +55,7 @@ public class SinglyLinkedList<T> {
     }
 
     public Boolean contains(T obj){
-        Node iterateNode = head;
+        Node<T> iterateNode = head;
         for (int i = 0; i < size; i++) {
             if(iterateNode.getValue().equals(obj))
                 return true;
@@ -69,7 +65,7 @@ public class SinglyLinkedList<T> {
     }
 
     public Integer find(T obj){
-        Node iterateNode = head;
+        Node<T> iterateNode = head;
         for (int i = 0; i < size; i++) {
             if(iterateNode.getValue().equals(obj))
                 return i;
@@ -83,7 +79,7 @@ public class SinglyLinkedList<T> {
     }
 
     public T get(Integer index){
-        Node iterateNode = head;
+        Node<T> iterateNode = head;
         if(index >= 0 && index <= size){
             for (int i = 0; i < index; i++) {
                 iterateNode = iterateNode.getNext();
@@ -103,20 +99,47 @@ public class SinglyLinkedList<T> {
     }
 
     public void sort(){
-        for (Node i = head; i.getNext() != null ; i = i.getNext()) {
-            for (Node j = i.getNext(); j.getNext() != null; j = j.getNext()){
-                if(j.getValue().toString().compareTo(j.getNext().getValue().toString()) == 1){
-                    T val = (T) j.getValue();
-                    j.setValue(j.getNext().getValue());
-                    j.getNext().setValue(val);
+        for (Node<T> i = head; i.getNext() != null ; i = i.getNext()) {
+            for (Node<T> j = i.getNext(); j != null; j = j.getNext()){
+                if(i.compareTo(j) > 0){
+                    T val = i.getValue();
+                    i.setValue(j.getValue());
+                    j.setValue(val);
                 }
             }
         }
     }
 
-    public class Node<T> {
+    public SinglyLinkedList slice(Integer startIndex, Integer endIndex){
+        SinglyLinkedList retList = new SinglyLinkedList();
+        Node startNode = head;
+        if(startIndex >= 0 && endIndex < size && startIndex < endIndex){
+            for (int i = 0; i < size; i++, startNode = startNode.getNext()) {
+                if(i >= startIndex)
+                    retList.add(startNode.value);
+            }
+        }
+        else
+            throw new IndexOutOfBoundsException();
+        return retList;
+    }
 
-        private Node next;
+    public SinglyLinkedList reverse(){
+        SinglyLinkedList retList = new SinglyLinkedList();
+        for (int i = size-1; i >= 0  ; i--) {
+            Node startNode = head;
+            for (int j = 0; j <= i; j++) {
+                if(j == i)
+                    retList.add(startNode.value);
+                startNode = startNode.getNext();
+            }
+        }
+        return retList;
+    }
+
+    public static class Node<T> implements Comparable<Node<T>>{
+
+        private Node<T> next;
         private T value;
 
         public Node(){
@@ -124,11 +147,11 @@ public class SinglyLinkedList<T> {
             value = null;
         }
 
-        protected void setNextNode(Node nextNode){
+        protected void setNextNode(Node<T> nextNode){
             next = nextNode;
         }
 
-        protected Node getNext(){
+        protected Node<T>getNext(){
             if(next != null)
                 return next;
             else
@@ -141,6 +164,10 @@ public class SinglyLinkedList<T> {
 
         protected T getValue(){
             return value;
+        }
+
+        public int compareTo(Node<T> o) {
+            return value.toString().compareTo(o.getValue().toString());
         }
     }
 }

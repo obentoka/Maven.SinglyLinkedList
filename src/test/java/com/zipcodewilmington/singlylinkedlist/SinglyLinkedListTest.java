@@ -152,14 +152,106 @@ public class SinglyLinkedListTest {
 
     @Test
     public void sortTest(){
-        Integer[] test = new Integer[]{1, 3, 2, 7};
-        Integer[] exp = new Integer[]{1, 2, 3, 7};
+        Integer[] test = new Integer[]{2, 3, 1, 7, 6, 5, 4};
+        Integer[] exp = new Integer[]{1, 2, 3, 4, 5, 6, 7};
         testList = new SinglyLinkedList<Integer>(test);
         SinglyLinkedList<Integer> expected = new SinglyLinkedList<Integer>(exp);
         testList.sort();
 
         for (int i = 0; i < testList.size(); i++) {
+            LOGGER.info("" + testList.get(i));
             assertEquals(expected.get(i), testList.get(i));
+        }
+    }
+
+    @Test
+    public void sortTes2(){
+        String[] test = new String[]{"bob", "ken", "tarry", "amanda"};
+        String[] exp = new String[]{"amanda", "bob", "ken", "tarry"};
+        SinglyLinkedList<String> stringTest = new SinglyLinkedList<String>(test);
+        SinglyLinkedList<String> expected = new SinglyLinkedList<String>(exp);
+        stringTest.sort();
+
+        for (int i = 0; i < stringTest.size(); i++) {
+            LOGGER.info("" + stringTest.get(i));
+            assertEquals(expected.get(i), stringTest.get(i));
+        }
+    }
+
+    @Test
+    public void sortTes3(){
+        Double[] test = new Double[]{50.0, 45.0, 45.1, 75.6, 36.3};
+        Double[] exp = new Double[]{36.3, 45.0, 45.1, 50.0, 75.6};
+        SinglyLinkedList<Double> doubleTest = new SinglyLinkedList<Double>(test);
+        SinglyLinkedList<Double> expected = new SinglyLinkedList<Double>(exp);
+        doubleTest.sort();
+
+        for (int i = 0; i < doubleTest.size(); i++) {
+            LOGGER.info("" + doubleTest.get(i));
+            assertEquals(expected.get(i), doubleTest.get(i));
+        }
+    }
+
+    @Test(expected = IndexOutOfBoundsException.class)
+    public void sliceTest(){
+        testList.slice(100, 100);
+    }
+
+    @Test(expected = IndexOutOfBoundsException.class)
+    public void sliceTest1(){
+        testList.slice(-1, 4);
+    }
+
+    @Test(expected = IndexOutOfBoundsException.class)
+    public void sliceTest2(){
+        Integer[] test = new Integer[]{2, 3, 1, 7, 6, 5, 4};
+        testList = new SinglyLinkedList<Integer>(test);
+
+        testList.slice(7, 5);
+    }
+
+    @Test
+    public void sliceTest3(){
+        Integer[] test = new Integer[]{2, 3, 1, 7, 6, 5, 4};
+        Integer[] exp = new Integer[]{3, 1, 7, 6};
+        testList = new SinglyLinkedList<Integer>(test);
+        SinglyLinkedList expected = new SinglyLinkedList(exp);
+
+        SinglyLinkedList actual = testList.slice(1, 5);
+
+        for (int i = 0; i < expected.size(); i++) {
+            LOGGER.info("" + actual.get(i));
+            assertEquals(expected.get(i), actual.get(i));
+        }
+    }
+
+    @Test
+    public void sortTes4(){
+        String[] test = new String[]{"bob", "ken", "tarry", "amanda", "exxe", "yummy"};
+        String[] exp = new String[]{"tarry", "amanda"};
+        SinglyLinkedList<String> stringTest = new SinglyLinkedList<String>(test);
+        SinglyLinkedList<String> expected = new SinglyLinkedList<String>(exp);
+
+        SinglyLinkedList actual = stringTest.slice(2, 4);
+
+        for (int i = 0; i < expected.size(); i++) {
+            LOGGER.info("" + actual.get(i));
+            assertEquals(expected.get(i), actual.get(i));
+        }
+    }
+
+    @Test
+    public void reverseTest(){
+        String[] test = new String[]{"bob", "ken", "tarry", "amanda", "exxe", "yummy"};
+        String[] exp = new String[]{"yummy", "exxe", "amanda", "tarry", "ken", "bob"};
+        SinglyLinkedList<String> stringTest = new SinglyLinkedList<String>(test);
+        SinglyLinkedList<String> expected = new SinglyLinkedList<String>(exp);
+
+        SinglyLinkedList actual = stringTest.reverse();
+
+        for (int i = 0; i < expected.size(); i++) {
+            LOGGER.info("" + actual.get(i));
+            assertEquals(expected.get(i), actual.get(i));
         }
     }
 }
